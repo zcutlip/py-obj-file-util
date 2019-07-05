@@ -11,6 +11,9 @@ import string
 import StringIO
 import struct
 import sys
+import six
+from six.moves import range
+from six.moves import zip
 
 SEEK_SET = 0
 SEEK_CUR = 1
@@ -596,7 +599,7 @@ def main():
         print('ok')
     else:
         print('%u errors' % (num_errors))
-    print
+    print()
 
 
 if __name__ == '__main__':
@@ -1201,7 +1204,7 @@ class AutoParser:
             return self.read_builtin_type(data, typename, item)
 
 def is_string(value):
-    return isinstance(value, basestring)
+    return isinstance(value, six.string_types)
 
 class StringTable:
     '''A string table  that uniques strings into unique offsets.'''

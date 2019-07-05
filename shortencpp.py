@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
+from __future__ import absolute_import
+from __future__ import print_function
 import re
 import sys
+from six.moves import range
 
 IDENTIFIER_REGEX = "[a-zA-Z_][a-zA-Z0-9_]+"
 CPP_QUALIFIED_NAME_REGEX = "%s(::%s)*" % (IDENTIFIER_REGEX,
@@ -21,7 +24,7 @@ pairs = [(ord('<'), ord('>')), (ord('('), ord(')')), (ord('['), ord(']')),
 
 def dump_string_as_array_of_chars(s):
     for (i, c) in enumerate(s):
-        print '[%u] %s' % (i, c)
+        print('[%u] %s' % (i, c))
 
 
 class string_range:
@@ -79,8 +82,8 @@ def find_cpp_arg_end(s, pos, end_pos):
                 pos_adjusted = True
                 break
             if ch == cp[1]:
-                print 'unexpected %c character at index %u of "%s"' % (ch, pos,
-                                                                       s)
+                print('unexpected %c character at index %u of "%s"' % (ch, pos,
+                                                                       s))
                 return -1
         if not pos_adjusted:
             pos += 1
@@ -105,7 +108,7 @@ class template_splitter:
             while arg_start < self.template_end:
                 arg_end = find_cpp_arg_end(s, arg_start, self.template_end)
                 if arg_end == -1:
-                    print 'error: unexpected arg end not found'
+                    print('error: unexpected arg end not found')
                 while s[arg_start].isspace():
                     arg_start += 1
                 while s[arg_end-1].isspace():
@@ -116,11 +119,11 @@ class template_splitter:
     def dump(self, f=sys.stdout):
         name = self.get_name()
         if name:
-            print 'name: "%s"' % (name)
+            print('name: "%s"' % (name))
             for idx in range(self.get_num_params()):
                 num = idx + 1
                 name = self.get_param(num)
-                print 'param%u = "%s"' % (num, name)
+                print('param%u = "%s"' % (num, name))
 
     def get_substr(self, range):
         return self.s[range.start:range.end]
@@ -147,7 +150,7 @@ class template_splitter:
         result = None
         while True:
             if debug:
-                print 'remaining = "%s"' % (remaining)
+                print('remaining = "%s"' % (remaining))
             t = template_splitter(remaining)
             if t.name is None:
                 processed = remaining
@@ -157,7 +160,7 @@ class template_splitter:
                     t.dump()
                 (processed, remaining) = t.__shorten_template()
             if debug:
-                print 'processed = "%s"' % (processed)
+                print('processed = "%s"' % (processed))
             if result:
                 result += processed
             else:
@@ -187,7 +190,7 @@ class template_splitter:
         '''
         debug = False
         if debug:
-            print 'template with default allocator as arg2: "%s"' % (self.s)
+            print('template with default allocator as arg2: "%s"' % (self.s))
         num_params = self.get_num_params()
         if num_params != 2:
             return None
@@ -205,7 +208,7 @@ class template_splitter:
         end = self.template_end+1
         short = self.s[0:remove_start] + self.s[remove_end:end]
         if debug:
-            print 'default allocator can be shortened: "%s"' % (short)
+            print('default allocator can be shortened: "%s"' % (short))
         return (short, self.s[end:])
 
     def __shorten_std_map(self):
@@ -213,7 +216,7 @@ class template_splitter:
         return a shortened string, else return None'''
         debug = False
         if debug:
-            print 'std::map template: "%s"' % (self.s)
+            print('std::map template: "%s"' % (self.s))
         num_params = self.get_num_params()
         if num_params != 4:
             return None
@@ -228,7 +231,7 @@ class template_splitter:
         if comparison.get_param(1) != param1:
             return None
         if debug:
-            print 'std::less is default'
+            print('std::less is default')
         allocator = template_splitter(self.get_param(4))
         if debug:
             allocator.dump()
@@ -248,7 +251,7 @@ class template_splitter:
         end = self.template_end+1
         short = self.s[0:remove_start] + self.s[remove_end:end]
         if debug:
-            print 'std::map can be shortened: "%s"' % (short)
+            print('std::map can be shortened: "%s"' % (short))
         return (short, self.s[end:])
 
 
@@ -278,7 +281,7 @@ def main():
         n_lines = len(lines)
         for i in range(n_lines):
             line = shorten_string(lines[i])
-            print line,
+            print(line, end=' ')
 
 
 if __name__ == '__main__':
