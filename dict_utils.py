@@ -11,14 +11,14 @@ class LookupDictionary(dict):
 
     def get_keys_for_value(self, value, fail_value=None):
         """find the key(s) as a list given a value"""
-        list_result = [item[0] for item in self.items() if item[1] == value]
+        list_result = [item[0] for item in list(self.items()) if item[1] == value]
         if len(list_result) > 0:
             return list_result
         return fail_value
 
     def get_first_key_for_value(self, value, fail_value=None):
         """return the first key of this dictionary given the value"""
-        list_result = [item[0] for item in self.items() if item[1] == value]
+        list_result = [item[0] for item in list(self.items()) if item[1] == value]
         if len(list_result) > 0:
             return list_result[0]
         return fail_value
