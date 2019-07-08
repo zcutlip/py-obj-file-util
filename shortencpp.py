@@ -2,9 +2,10 @@
 
 from __future__ import absolute_import
 from __future__ import print_function
+from builtins import range
+from builtins import object
 import re
 import sys
-from six.moves import range
 
 IDENTIFIER_REGEX = "[a-zA-Z_][a-zA-Z0-9_]+"
 CPP_QUALIFIED_NAME_REGEX = "%s(::%s)*" % (IDENTIFIER_REGEX,
@@ -12,7 +13,7 @@ CPP_QUALIFIED_NAME_REGEX = "%s(::%s)*" % (IDENTIFIER_REGEX,
 string_replace = [
     ("std::__1", "std"),
     ("std::basic_string<char, std::char_traits<char>, std::allocator<char> >", "std::string"),
-    ("std::basic_ostringstream<char, std::char_traits<char>, std::allocator<char> >",  "std::basic_ostringstream"),
+    ("std::basic_ostringstream<char, std::char_traits<char>, std::allocator<char> >", "std::basic_ostringstream"),
     ("std::basic_stringbuf<char, std::char_traits<char>, std::allocator<char> >", "std::stringbuf"),
     ("std::basic_istream<char, std::char_traits<char> >", "std::istream"),
     ("std::basic_ostream<char, std::char_traits<char> >", "std::ostream"),
@@ -22,12 +23,13 @@ string_replace = [
 pairs = [(ord('<'), ord('>')), (ord('('), ord(')')), (ord('['), ord(']')),
          (ord('{'), ord('}'))]
 
+
 def dump_string_as_array_of_chars(s):
     for (i, c) in enumerate(s):
         print('[%u] %s' % (i, c))
 
 
-class string_range:
+class string_range(object):
     def __init__(self, start, end):
         self.start = start
         self.end = end
@@ -90,7 +92,7 @@ def find_cpp_arg_end(s, pos, end_pos):
     return pos
 
 
-class template_splitter:
+class template_splitter(object):
     def __init__(self, s):
         self.s = s
         self.name = None
