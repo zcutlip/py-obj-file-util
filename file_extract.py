@@ -5,15 +5,20 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from builtins import zip
+from builtins import str
+from builtins import range
+from builtins import object
 import binascii
 import re
 import string
-import StringIO
+import io
 import struct
 import sys
 import six
-from six.moves import range
-from six.moves import zip
+
+from future import standard_library
+standard_library.install_aliases()
 
 SEEK_SET = 0
 SEEK_CUR = 1
@@ -26,6 +31,7 @@ def align_to(value, align):
         pad = align - delta
         return value + pad
     return value
+
 
 def dump_memory(base_addr, data, num_per_line, outfile):
 
@@ -93,7 +99,7 @@ def escape(c):
         return '\\U' + '%08.8x' % (c)
 
 
-class FileEncode:
+class FileEncode(object):
     '''Encode binary data to a file'''
 
     def __init__(self, f, b='=', addr_size=0):
@@ -228,7 +234,7 @@ class FileEncode:
         self.file.seek(saved_offset)
 
 
-class FileExtract:
+class FileExtract(object):
     '''Decode binary data from a file'''
 
     def __init__(self, f, b='=', addr_size=0):
@@ -297,7 +303,7 @@ class FileExtract:
     def read_data(self, byte_size):
         bytes = self.read_size(byte_size)
         if len(bytes) == byte_size:
-            return FileExtract(StringIO.StringIO(bytes),
+            return FileExtract(io.StringIO(bytes),
                                self.byte_order,
                                self.addr_size)
         return None
@@ -580,7 +586,7 @@ def main():
     num_errors = 0
     print('Running unit tests...', end="")
     for (s, check_n) in sleb_tests:
-        e = FileExtract(StringIO.StringIO(s))
+        e = FileExtract(io.StringIO(s))
         n = e.get_sleb128()
         if n != check_n:
             num_errors += 1
@@ -588,7 +594,7 @@ def main():
                     check_n, n))
             dump_memory(0, s, 32, sys.stdout)
     for (s, check_n) in uleb_tests:
-        e = FileExtract(StringIO.StringIO(s))
+        e = FileExtract(io.StringIO(s))
         n = e.get_uleb128()
         if n != check_n:
             num_errors += 1
@@ -606,7 +612,7 @@ if __name__ == '__main__':
     main()
 
 
-class AutoParser:
+class AutoParser(object):
     '''A class that enables easy parsing of binary files.
 
     This class is designed to be sublcassed and clients must provide a list of
@@ -804,7 +810,7 @@ class AutoParser:
                 AutoParser.__init__(self, self.items, data)
 
     '''
-    type_regex = re.compile('([^\[]+)\[([0-9]+)\]')
+    type_regex = re.compile(r'([^\[]+)\[([0-9]+)\]')
     default_formats = {
         'u8': '%#2.2x',
         'u16': '%#4.4x',
@@ -1049,7 +1055,7 @@ class AutoParser:
             else:
                 if 'dump_width' in item:
                     dump_width = item['dump_width']
-                    strm = StringIO.StringIO()
+                    strm = io.StringIO()
                     self.dump_value(strm, item, value, print_name, parent_path)
                     s = strm.getvalue()
                     f.write(s)
@@ -1203,10 +1209,12 @@ class AutoParser:
         else:
             return self.read_builtin_type(data, typename, item)
 
+
 def is_string(value):
     return isinstance(value, six.string_types)
 
-class StringTable:
+
+class StringTable(object):
     '''A string table  that uniques strings into unique offsets.'''
     def __init__(self):
         self.offset = 0
