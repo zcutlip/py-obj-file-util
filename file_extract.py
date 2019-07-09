@@ -303,7 +303,7 @@ class FileExtract(object):
     def read_data(self, byte_size):
         bytes = self.read_size(byte_size)
         if len(bytes) == byte_size:
-            return FileExtract(io.StringIO(bytes),
+            return FileExtract(io.BytesIO(bytes),
                                self.byte_order,
                                self.addr_size)
         return None
@@ -437,9 +437,10 @@ class FileExtract(object):
         if s:
             cstr, = struct.unpack(self.byte_order + ("%i" % n) + 's', s)
             # Strip trialing NULLs
-            cstr = string.strip(cstr, "\0")
+            cstr = cstr.strip(b"\x00")
             if isprint_only_with_space_padding:
                 for c in cstr:
+                    c = chr(c)
                     if c in string.printable or ord(c) == 0:
                         continue
                     return fail_value
@@ -586,7 +587,7 @@ def main():
     num_errors = 0
     print('Running unit tests...', end="")
     for (s, check_n) in sleb_tests:
-        e = FileExtract(io.StringIO(s))
+        e = FileExtract(io.BytesIO(s))
         n = e.get_sleb128()
         if n != check_n:
             num_errors += 1
@@ -594,7 +595,7 @@ def main():
                     check_n, n))
             dump_memory(0, s, 32, sys.stdout)
     for (s, check_n) in uleb_tests:
-        e = FileExtract(io.StringIO(s))
+        e = FileExtract(io.BytesIO(s))
         n = e.get_uleb128()
         if n != check_n:
             num_errors += 1
@@ -1055,7 +1056,7 @@ class AutoParser(object):
             else:
                 if 'dump_width' in item:
                     dump_width = item['dump_width']
-                    strm = io.StringIO()
+                    strm = io.BytesIO()
                     self.dump_value(strm, item, value, print_name, parent_path)
                     s = strm.getvalue()
                     f.write(s)
