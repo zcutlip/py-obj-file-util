@@ -5,6 +5,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from past.builtins import basestring
 from builtins import zip
 from builtins import str
 from builtins import range
@@ -440,7 +441,8 @@ class FileExtract(object):
             cstr = cstr.strip(b"\x00")
             if isprint_only_with_space_padding:
                 for c in cstr:
-                    c = chr(c)
+                    if isinstance(c, int):
+                        c = chr(c)
                     if c in string.printable or ord(c) == 0:
                         continue
                     return fail_value
