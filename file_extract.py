@@ -5,7 +5,6 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from past.builtins import basestring
 from builtins import zip
 from builtins import str
 from builtins import range
@@ -20,6 +19,8 @@ import six
 
 from future import standard_library
 standard_library.install_aliases()
+
+PRINTABLE_BYTES = string.printable.encode("utf-8")
 
 SEEK_SET = 0
 SEEK_CUR = 1
@@ -83,7 +84,7 @@ def hex_escape(s):
 
 
 def escape(c):
-    if c in string.printable:
+    if c in PRINTABLE_BYTES:
         if c == '\n':
             return '\\n'
         if c == '\t':
@@ -441,9 +442,7 @@ class FileExtract(object):
             cstr = cstr.strip(b"\x00")
             if isprint_only_with_space_padding:
                 for c in cstr:
-                    if isinstance(c, int):
-                        c = chr(c)
-                    if c in string.printable or ord(c) == 0:
+                    if c in PRINTABLE_BYTES or ord(c) == 0:
                         continue
                     return fail_value
             return cstr
