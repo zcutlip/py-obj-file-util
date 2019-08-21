@@ -112,9 +112,6 @@ class FileEncode(object):
         self.addr_size = addr_size
         self.set_byte_order(b)
 
-    def is_in_memory(self):
-        return False
-
     def align_to(self, align):
         curr_pos = self.file.tell()
         delta = curr_pos % align
@@ -250,6 +247,9 @@ class FileExtract(object):
         self.offsets = list()
         self.addr_size = addr_size
         self.set_byte_order(b)
+
+    def is_in_memory(self):
+        return False
 
     def get_size(self):
         pos = self.file.tell()
