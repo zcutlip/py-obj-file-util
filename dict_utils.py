@@ -1,4 +1,6 @@
 #! /usr/bin/env python
+from future.utils import iteritems
+
 
 class LookupDictionary(dict):
     """
@@ -9,16 +11,20 @@ class LookupDictionary(dict):
         """items can be a list of pair_lists or a dictionary"""
         dict.__init__(self, items)
 
+    def _keys_for_value_no_fail(self, value):
+        list_result = [k for k, v in iteritems(self) if v == value]
+        return list_result
+
     def get_keys_for_value(self, value, fail_value=None):
         """find the key(s) as a list given a value"""
-        list_result = [item[0] for item in list(self.items()) if item[1] == value]
+        list_result = self._keys_for_value_no_fail(value)
         if len(list_result) > 0:
             return list_result
         return fail_value
 
     def get_first_key_for_value(self, value, fail_value=None):
         """return the first key of this dictionary given the value"""
-        list_result = [item[0] for item in list(self.items()) if item[1] == value]
+        list_result = self._keys_for_value_no_fail(value)
         if len(list_result) > 0:
             return list_result[0]
         return fail_value
