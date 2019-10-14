@@ -1,24 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-
-from builtins import zip
-from builtins import str
-from builtins import range
-from builtins import object
 import binascii
 import re
 import string
 import io
 import struct
 import sys
-import six
 
-from future import standard_library
-standard_library.install_aliases()
 
 PRINTABLE_BYTES = string.printable.encode("utf-8")
 
@@ -596,7 +584,7 @@ def main():
         if n != check_n:
             num_errors += 1
             print('\nerror: sleb128 extraction failed for %i (got %i)' % (
-                    check_n, n))
+                check_n, n))
             dump_memory(0, s, 32, sys.stdout)
     for (s, check_n) in uleb_tests:
         e = FileExtract(io.BytesIO(s))
@@ -604,7 +592,7 @@ def main():
         if n != check_n:
             num_errors += 1
             print('\nerror: uleb128 extraction failed for %i (got %i)' % (
-                    check_n, n))
+                check_n, n))
             dump_memory(0, s, 32, sys.stdout)
     if num_errors == 0:
         print('ok')
@@ -1216,7 +1204,7 @@ class AutoParser(object):
 
 
 def is_string(value):
-    return isinstance(value, six.string_types)
+    return isinstance(value, str)
 
 
 class StringTable(object):
