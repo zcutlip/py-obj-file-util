@@ -113,7 +113,7 @@ class template_splitter(object):
                     print('error: unexpected arg end not found')
                 while s[arg_start].isspace():
                     arg_start += 1
-                while s[arg_end-1].isspace():
+                while s[arg_end - 1].isspace():
                     arg_end -= 1
                 self.params.append(string_range(arg_start, arg_end))
                 arg_start = arg_end + 1
@@ -179,7 +179,7 @@ class template_splitter(object):
         if name in default_allocator_2:
             result = self.__shorten_template_with_default_allocator()
         if result is None:
-            return (self.s[0:self.template_end+1], self.s[self.template_end+1:])
+            return (self.s[0:self.template_end + 1], self.s[self.template_end + 1:])
         else:
             return result
 
@@ -207,7 +207,7 @@ class template_splitter(object):
         remove_end = self.params[1].end
         if self.s[remove_end] == ' ':
             remove_end += 1
-        end = self.template_end+1
+        end = self.template_end + 1
         short = self.s[0:remove_start] + self.s[remove_end:end]
         if debug:
             print('default allocator can be shortened: "%s"' % (short))
@@ -249,8 +249,8 @@ class template_splitter(object):
         if pair_second != self.get_param(2):
             return None
         remove_start = self.params[1].end
-        remove_end = self.params[3].end+1
-        end = self.template_end+1
+        remove_end = self.params[3].end + 1
+        end = self.template_end + 1
         short = self.s[0:remove_start] + self.s[remove_end:end]
         if debug:
             print('std::map can be shortened: "%s"' % (short))
