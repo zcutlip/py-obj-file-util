@@ -3,16 +3,19 @@ from builtins import object
 import sys
 import os
 
+
 class TerminalColors(object):
     '''Simple terminal colors class'''
-    def __init__(self, enabled = True):
+
+    def __init__(self, enabled=True):
         # TODO: discover terminal type from "file" and disable if
         # it can't handle the color codes
         self.enabled = enabled
     
     def set_file(self, file):
         plat = sys.platform
-        supported_platform = plat != 'Pocket PC' and (plat != 'win32' or 'ANSICON' in os.environ)
+        supported_platform = plat != 'Pocket PC' and (
+            plat != 'win32' or 'ANSICON' in os.environ)
         if supported_platform:
             self.enabled = hasattr(file, 'isatty') and file.isatty()
         else:
@@ -30,7 +33,7 @@ class TerminalColors(object):
             return "\x1b[2m"
         return ''
     
-    def bold(self, on = True):
+    def bold(self, on=True):
         '''Enable or disable bold depending on the "on" paramter.'''
         if self.enabled:
             if on:
@@ -39,7 +42,7 @@ class TerminalColors(object):
                 return "\x1b[22m"
         return ''
     
-    def italics(self, on = True):
+    def italics(self, on=True):
         '''Enable or disable italics depending on the "on" paramter.'''
         if self.enabled:
             if on:
@@ -48,7 +51,7 @@ class TerminalColors(object):
                 return "\x1b[23m"
         return ''
     
-    def underline(self, on = True):
+    def underline(self, on=True):
         '''Enable or disable underline depending on the "on" paramter.'''
         if self.enabled:
             if on:
@@ -57,7 +60,7 @@ class TerminalColors(object):
                 return "\x1b[24m"
         return ''
     
-    def inverse(self, on = True):
+    def inverse(self, on=True):
         '''Enable or disable inverse depending on the "on" paramter.'''
         if self.enabled:
             if on:
@@ -66,7 +69,7 @@ class TerminalColors(object):
                 return "\x1b[27m"
         return ''
     
-    def strike(self, on = True):
+    def strike(self, on=True):
         '''Enable or disable strike through depending on the "on" paramter.'''
         if self.enabled:
             if on:
@@ -75,7 +78,7 @@ class TerminalColors(object):
                 return "\x1b[29m"
         return ''
                      
-    def black(self, fg = True):        
+    def black(self, fg=True):
         '''Set the foreground or background color to black. 
         The foreground color will be set if "fg" tests True. The background color will be set if "fg" tests False.'''
         if self.enabled:         
@@ -85,7 +88,7 @@ class TerminalColors(object):
                 return "\x1b[40m"
         return ''
     
-    def red(self, fg = True):          
+    def red(self, fg=True):
         '''Set the foreground or background color to red. 
         The foreground color will be set if "fg" tests True. The background color will be set if "fg" tests False.'''
         if self.enabled:         
@@ -95,7 +98,7 @@ class TerminalColors(object):
                 return "\x1b[41m"
         return ''
     
-    def green(self, fg = True):        
+    def green(self, fg=True):
         '''Set the foreground or background color to green. 
         The foreground color will be set if "fg" tests True. The background color will be set if "fg" tests False.'''
         if self.enabled:         
@@ -105,7 +108,7 @@ class TerminalColors(object):
                 return "\x1b[42m"
         return ''
     
-    def yellow(self, fg = True):       
+    def yellow(self, fg=True):
         '''Set the foreground or background color to yellow. 
         The foreground color will be set if "fg" tests True. The background color will be set if "fg" tests False.'''
         if self.enabled:         
@@ -115,7 +118,7 @@ class TerminalColors(object):
                 return "\x1b[43m"
         return ''
     
-    def blue(self, fg = True):         
+    def blue(self, fg=True):
         '''Set the foreground or background color to blue. 
         The foreground color will be set if "fg" tests True. The background color will be set if "fg" tests False.'''
         if self.enabled:         
@@ -125,7 +128,7 @@ class TerminalColors(object):
                 return "\x1b[44m"
         return ''
     
-    def magenta(self, fg = True):      
+    def magenta(self, fg=True):
         '''Set the foreground or background color to magenta. 
         The foreground color will be set if "fg" tests True. The background color will be set if "fg" tests False.'''
         if self.enabled:         
@@ -135,7 +138,7 @@ class TerminalColors(object):
                 return "\x1b[45m"
         return ''
     
-    def cyan(self, fg = True):         
+    def cyan(self, fg=True):
         '''Set the foreground or background color to cyan. 
         The foreground color will be set if "fg" tests True. The background color will be set if "fg" tests False.'''
         if self.enabled:         
@@ -145,7 +148,7 @@ class TerminalColors(object):
                 return "\x1b[46m"
         return ''
     
-    def white(self, fg = True):        
+    def white(self, fg=True):
         '''Set the foreground or background color to white. 
         The foreground color will be set if "fg" tests True. The background color will be set if "fg" tests False.'''
         if self.enabled:         
@@ -155,7 +158,7 @@ class TerminalColors(object):
                 return "\x1b[47m"
         return ''
     
-    def default(self, fg = True):      
+    def default(self, fg=True):
         '''Set the foreground or background color to the default. 
         The foreground color will be set if "fg" tests True. The background color will be set if "fg" tests False.'''
         if self.enabled:         
