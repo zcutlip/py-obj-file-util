@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-from future.utils import iteritems
 
 
 class LookupDictionary(dict):
@@ -12,7 +11,7 @@ class LookupDictionary(dict):
         dict.__init__(self, items)
 
     def _keys_for_value_no_fail(self, value):
-        list_result = [k for k, v in iteritems(self) if v == value]
+        list_result = [k for k, v in self.items() if v == value]
         return list_result
 
     def get_keys_for_value(self, value, fail_value=None):
