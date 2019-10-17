@@ -52,7 +52,7 @@ class Enum(LookupDictionary):
         return max_key_len
 
     def set_value(self, v):
-        if type(v) == str:
+        if isinstance(v, str):
             self.value = self.get_value(v, -1)
         else:
             self.value = v
@@ -66,7 +66,7 @@ class Enum(LookupDictionary):
     def __lt__(self, other):
         if other is None:
             return False
-        if type(other) is int:
+        if isinstance(other, int):
             return self.value < other
         else:
             return self.value < other.value
@@ -74,7 +74,7 @@ class Enum(LookupDictionary):
     def __le__(self, other):
         if other is None:
             return False
-        if type(other) is int:
+        if isinstance(other, int):
             return self.value <= other
         else:
             return self.value <= other.value
@@ -82,7 +82,7 @@ class Enum(LookupDictionary):
     def __gt__(self, other):
         if other is None:
             return False
-        if type(other) is int:
+        if isinstance(other, int):
             return self.value > other
         else:
             return self.value > other.value
@@ -90,7 +90,7 @@ class Enum(LookupDictionary):
     def __ge__(self, other):
         if other is None:
             return False
-        if type(other) is int:
+        if isinstance(other, int):
             return self.value >= other
         else:
             return self.value >= other.value
@@ -98,7 +98,7 @@ class Enum(LookupDictionary):
     def __eq__(self, other):
         if other is None:
             return False
-        if type(other) is int:
+        if isinstance(other, int):
             return self.value == other
         else:
             return self.value == other.value
@@ -106,7 +106,7 @@ class Enum(LookupDictionary):
     def __ne__(self, other):
         if other is None:
             return True
-        if type(other) is int:
+        if isinstance(other, int):
             return self.value != other
         else:
             return self.value != other.value
