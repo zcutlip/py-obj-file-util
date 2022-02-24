@@ -8,7 +8,7 @@ class LookupDictionary(dict):
 
     def __init__(self, items=[]):
         """items can be a list of pair_lists or a dictionary"""
-        dict.__init__(self, items)
+        super().__init__(items)
 
     def _keys_for_value_no_fail(self, value):
         list_result = [k for k, v in self.items() if v == value]
